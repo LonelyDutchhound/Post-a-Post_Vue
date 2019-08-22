@@ -67,7 +67,7 @@ body {
   margin-left: 0.3em;
 }
 
-.text-form__show-text-group {
+.text-form__show-group {
   display: flex;
   flex-direction: column;
 }

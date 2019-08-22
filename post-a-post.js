@@ -1,35 +1,34 @@
-let postClouds = new Object();
+
 
 Vue.component( 'post-a-post', {
   template: `
     <form class="text-form" action="index.html" method="post">
-      <h1 class="text-form__title">post-a-post</h1>
-        <div class="preq_error" v-if="show">
-          <p class="preq">all fields required</p>
-        </div>
-      <div class="text-form__add-group">
-        <div class="text-form__input-group">
-          <label class="text-form__label">Enter your post text here:</label>
-          <textarea class="text-form__input text-input__field" type="text" maxlength="400" placeholder="only 400 chars long" @keyup.13="addPost" v-model="postText"></textarea>
-        </div>
-        <div class="text-form__input-group">
-          <label class="text-form__label">Date & Time of the post:</label>
-          <input class="text-form__input date-input__field" type="datetime-local" min="2000-01-01T00:01" max="3000-12-31T23:59" @keyup.13="addPost" v-model="postDate">
-        </div>
-        <div class="text-form__input-group">
-          <a class="text-form__add-button" @click="addPost">add my text to stack</a>
-        </div>
-      </div>
-    </form>
-  `,
+        <h1 class="text-form__title">post-a-post</h1>
+            <div class="preq_error" v-if="show">
+              <p class="preq">all fields required</p>
+            </div>
+          <div class="text-form__add-group">
+            <div class="text-form__input-group">
+              <label class="text-form__label">Enter your post text here:</label>
+              <textarea class="text-form__input text-input__field" type="text" maxlength="400" placeholder="only 400 chars long" @keyup.13="addPost" v-model="postText"></textarea>
+            </div>
+            <div class="text-form__input-group">
+              <label class="text-form__label">Date & Time of the post:</label>
+              <input class="text-form__input date-input__field" type="datetime-local" min="2000-01-01T00:01" max="3000-12-31T23:59" @keyup.13="addPost" v-model="postDate">
+            </div>
+            <div class="text-form__input-group">
+              <a class="text-form__add-button" @click="addPost">add my text to stack</a>
+            </div>
+          </div>
+        </form>
+      `,
   data: function () {
     return {
       show: false,
       postText : null,
       postDate : null,
       postTime : null,
-      isChecked : null,
-      postClouds: postClouds
+      isChecked : null
     }
   },
   methods: {
@@ -38,22 +37,14 @@ Vue.component( 'post-a-post', {
         this.show = true;
       } else {
         this.show = false;
-  console.log(this.show);
+
         let userPost = {
           postText : this.postText,
           postDate : this.postDate.substring(0, 10),
           postTime : this.postDate.substring(11),
           isChecked : false
         }
-  console.log(userPost);
-        if ( this.postClouds.hasOwnProperty(`${userPost.postDate}`) ) {
-            this.postClouds[`${userPost.postDate}`].push(userPost);
-  console.log(this.postClouds[`${userPost.postDate}`]);
-          } else {
-            this.postClouds[`${userPost.postDate}`] = [];
-            this.postClouds[`${userPost.postDate}`].push(userPost);
-          };
-  console.log(this.postClouds[`${userPost.postDate}`]);
+        this.$emit('post-added', userPost)
         this.postText = null;
         this.postDate = null;
         this.postTime = null;
@@ -63,30 +54,41 @@ Vue.component( 'post-a-post', {
   }
 });
 
-let vm = app = new Vue({
-    el: '#app'
-})
-
-/*Vue.component ( 'show-an-sort' {
-  template: `
-    <div class="user-post__date-block">
-      <p class="block-date">Post from {{ postClouds[] }}</p>
-      <div class="user-post__block">
-        <div class="user-post__checkbox">
-          <input type="checkbox" @change="isChecked = true">
-        </div>
-        <div class="user-post__text">
-          <p><em>{{ postClouds[].postTime }}</em><br>{{ postClouds[].postText }}</p>
-        </div>
-      </div>
-    </div>
-  `,
+let vm = new Vue({
+  el: '#app',
   data: function () {
-    return postClouds;
+    return {
+      postClouds: postClouds = {}
+    }
   },
   methods:{
-    checkTheBox: function (event) {
-      this.isChecked = true;
+    addPostToCloud: function(userPost){
+      if ( this.postClouds.hasOwnProperty(userPost.postDate) ) {
+        this.postClouds[userPost.postDate].push(userPost);
+      } else {
+          this.postClouds[userPost.postDate] = [];
+          this.postClouds[userPost.postDate].push(userPost);
+        };
+        console.log(postClouds);
+      },  
     }
-  }
-});*/
+  });
+
+
+
+
+
+
+
+/*<div class="user-post__checkbox">
+  <input type="checkbox" @change="isChecked = true">
+</div>
+<div class="user-post__text">
+  <p v-for="(postCloud, date) in this.postClouds"><em>{{ postClouds.date.postTime }}</em><br>{{ postClouds.date.postText }}</p>
+</div>
+<p v-if="!this.postClouds.length">There are no posts yet.</p>
+
+
+
+*/
+// :id="this.postClouds["2003-02-02"][0].postDate + this.postClouds["2003-02-02"][0].postTime"

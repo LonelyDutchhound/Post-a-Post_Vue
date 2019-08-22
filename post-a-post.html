@@ -13,8 +13,22 @@
 </head>
 <body>
   <div id="app">
-    <post-a-post></post-a-post>
-    <!--<showAPost></showAPost>-->
+    <div>
+      <post-a-post @post-added="addPostToCloud"></post-a-post>
+        <div class="text-form__show-group">
+          <div class="user-post__date-block" v-for="(postCloud, key) in postClouds">
+            <p class="block-date">Post from {{ key }}</p>
+            <div class="user-post__block">
+              <div class="user-post__checkbox">
+                <input type="checkbox" @change="isChecked = true">
+              </div>
+              <div class="user-post__text">
+                <p v-for="(postCloud, key, index) in postClouds"><em>{{ postCloud[key][index].postTime }}</em><br>{{ postCloud[key][index].postText }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 <script src="post-a-post.js"></script>
 </body>
