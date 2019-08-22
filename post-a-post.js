@@ -1,17 +1,19 @@
-let postAPost = {
+let postClouds = new Object();
+
+Vue.component( 'post-a-post', {
   template: `
     <form class="text-form" action="index.html" method="post">
       <h1 class="text-form__title">post-a-post</h1>
         <div class="preq_error" v-if="show">
-          <p class="preq">{{ message }}</p>
+          <p class="preq">all fields required</p>
         </div>
       <div class="text-form__add-group">
         <div class="text-form__input-group">
-          <label class="text-form__label" for="text">Enter your post text here:</label>
+          <label class="text-form__label">Enter your post text here:</label>
           <textarea class="text-form__input text-input__field" type="text" maxlength="400" placeholder="only 400 chars long" @keyup.13="addPost" v-model="postText"></textarea>
         </div>
         <div class="text-form__input-group">
-          <label class="text-form__label" for="date">Date & Time of the post:</label>
+          <label class="text-form__label">Date & Time of the post:</label>
           <input class="text-form__input date-input__field" type="datetime-local" min="2000-01-01T00:01" max="3000-12-31T23:59" @keyup.13="addPost" v-model="postDate">
         </div>
         <div class="text-form__input-group">
@@ -22,79 +24,69 @@ let postAPost = {
   `,
   data: function () {
     return {
-      message: 'all fields required',
       show: false,
       postText : null,
       postDate : null,
       postTime : null,
-      status : null,
-      postsCloud: postsCloud
+      isChecked : null,
+      postClouds: postClouds
     }
   },
   methods: {
     addPost: function (event) {
-      if ( !postText && !postDate ) {
+      if ( !this.postText || !this.postDate ) {
         this.show = true;
       } else {
         this.show = false;
-        let newUserPost = {
+  console.log(this.show);
+        let userPost = {
           postText : this.postText,
           postDate : this.postDate.substring(0, 10),
           postTime : this.postDate.substring(11),
-          status : false
+          isChecked : false
         }
-        this.$emit('postAdded', dateContainer, postBlock),
-        this.postText : null,
-        this.postDate : null,
-        this.postTime : null
-        this.status : null
+  console.log(userPost);
+        if ( this.postClouds.hasOwnProperty(`${userPost.postDate}`) ) {
+            this.postClouds[`${userPost.postDate}`].push(userPost);
+  console.log(this.postClouds[`${userPost.postDate}`]);
+          } else {
+            this.postClouds[`${userPost.postDate}`] = [];
+            this.postClouds[`${userPost.postDate}`].push(userPost);
+          };
+  console.log(this.postClouds[`${userPost.postDate}`]);
+        this.postText = null;
+        this.postDate = null;
+        this.postTime = null;
+        this.isChecked = null;
       };
-    },
-    isDone: function (event) {
-      this.status = true;
     }
   }
-};
+});
 
-let postBlock = {
+let vm = app = new Vue({
+    el: '#app'
+})
+
+/*Vue.component ( 'show-an-sort' {
   template: `
     <div class="user-post__date-block">
-      <p class="block-date">Post from {{ postDate }}</p>
+      <p class="block-date">Post from {{ postClouds[] }}</p>
       <div class="user-post__block">
         <div class="user-post__checkbox">
-          <input type="checkbox" @change="isDone">
+          <input type="checkbox" @change="isChecked = true">
         </div>
         <div class="user-post__text">
-          <p><em>{{ postTime }}</em><br>{{ postText }}</p>
+          <p><em>{{ postClouds[].postTime }}</em><br>{{ postClouds[].postText }}</p>
         </div>
       </div>
     </div>
   `,
   data: function () {
-    return {
-
-    }
+    return postClouds;
   },
   methods:{
-
+    checkTheBox: function (event) {
+      this.isChecked = true;
+    }
   }
-};
-
-let postsCloud = new Object();
-
-if (!$(`.${this.uniqId.substring(0, 8)}`).length) newUserPost.createDateContainer();
-newUserPost.createPost();
-
-$('.text-input__field,.date-input__field').val('');
-$('.text-form__show-text-group')[0].addEventListener('change', this.sortPosts);
-} else {
-if ( !postText && !postDate ) this.show = true;
-
-};
-},
-sortPosts: function (event) {
-const postId = event.target.id;
-$('.' + postId).toggleClass('selected');
-};
-}
-});
+});*/
