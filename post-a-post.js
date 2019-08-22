@@ -1,5 +1,3 @@
-
-
 Vue.component( 'post-a-post', {
   template: `
     <form class="text-form" action="index.html" method="post">
@@ -70,7 +68,7 @@ let vm = new Vue({
           this.postClouds[userPost.postDate].push(userPost);
         };
         console.log(postClouds);
-      },  
+      },
     }
   });
 
@@ -80,15 +78,6 @@ let vm = new Vue({
 
 
 
-/*<div class="user-post__checkbox">
-  <input type="checkbox" @change="isChecked = true">
-</div>
-<div class="user-post__text">
-  <p v-for="(postCloud, date) in this.postClouds"><em>{{ postClouds.date.postTime }}</em><br>{{ postClouds.date.postText }}</p>
-</div>
+/*
 <p v-if="!this.postClouds.length">There are no posts yet.</p>
-
-
-
 */
-// :id="this.postClouds["2003-02-02"][0].postDate + this.postClouds["2003-02-02"][0].postTime"
