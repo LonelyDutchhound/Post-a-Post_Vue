@@ -1,0 +1,115 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.text-form{
+  width: 600px;
+  min-width: 300px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(24, 77, 140, 0.64);
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+}
+
+.text-form__text-input,
+.text-form__date-input {
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  border-collapse: collapse;
+}
+
+.text-form__add-button {
+  display: inline-block;
+  position: relative;
+  padding: 0 1em;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Open Sans', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: rgba(24, 77, 140, 0.64);
+  color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3)
+}
+
+.text-form__title {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0 0 1em 0;
+  color: rgb(24, 77, 140)
+}
+
+.preq_error {
+  display: block;
+  text-align: center;
+}
+
+.text-form__input-group {
+  position: relative;
+  margin-bottom: 1em;
+}
+
+.text-input__field {
+  resize: none;
+  max-width: 99%;
+  max-height: 4em;
+  min-width: 99%;
+  min-height: 8em;
+  margin-top: 0.3em;
+}
+
+.date-input__field {
+  margin-left: 0.3em;
+}
+
+.text-form__show-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.selected {
+  text-decoration: line-through;
+  order: 2;
+}
+
+p {
+  display: block;
+  order: -2;
+  font-size: 14px;
+  margin: 0 1em 1em;
+}
+
+.block-date {
+  font-weight: bold;
+}
+
+.user-post__date-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-post__block{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2em;
+  max-width: 99%;
+}
+
+.user-post__text {
+  position: relative;
+  max-width: 99%;
+  text-align: justify;
+  word-wrap: break-word;
+}
+
+p.preq {
+  font-size: 10px;
+  color: red;
+  margin: 0 0.5em 0;
+}
