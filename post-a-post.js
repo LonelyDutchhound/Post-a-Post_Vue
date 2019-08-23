@@ -60,7 +60,7 @@ Vue.component( 'show-and-sort',{
           <p class="block-date">Post from {{ date }}</p>
           <div class="user-post__block" v-for="post in postCloud">
             <div class="user-post__checkbox">
-              <input type="checkbox" @change="isChecked = true">
+              <input type="checkbox" @change="makeItChecked" :id="'at'+ post.postDate + post.postTime" >
             </div>
             <div class="user-post__text">
               <p><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
@@ -72,7 +72,17 @@ Vue.component( 'show-and-sort',{
   `,
   props: [ 'postClouds'],
   methods:{
-    
+    makeItChecked: function (event) {
+      console.log(event.target.id)
+      let date = event.target.id.substring(2,12);
+      let time = event.target.id.substring(12);
+      console.log(date, time);
+      console.log(postClouds[date]);
+      let post = postClouds[date].findIndex(item => item.postTime === time);
+      console.log(post);
+      postClouds[date][post].isChecked = true;
+      console.log(postClouds[date][post].isChecked);
+    }
   }
 });
 
