@@ -1,25 +1,24 @@
+//let postClouds = {};
+
 Vue.component( 'post-a-post', {
   template: `
-    <form class="text-form" action="index.html" method="post">
-        <h1 class="text-form__title">post-a-post</h1>
-            <div class="preq_error" v-if="show">
-              <p class="preq">all fields required</p>
-            </div>
-          <div class="text-form__add-group">
-            <div class="text-form__input-group">
-              <label class="text-form__label">Enter your post text here:</label>
-              <textarea class="text-form__input text-input__field" type="text" maxlength="400" placeholder="only 400 chars long" @keyup.13="addPost" v-model="postText"></textarea>
-            </div>
-            <div class="text-form__input-group">
-              <label class="text-form__label">Date & Time of the post:</label>
-              <input class="text-form__input date-input__field" type="datetime-local" min="2000-01-01T00:01" max="3000-12-31T23:59" @keyup.13="addPost" v-model="postDate">
-            </div>
-            <div class="text-form__input-group">
-              <a class="text-form__add-button" @click="addPost">add my text to stack</a>
-            </div>
-          </div>
-        </form>
-      `,
+    <div class="text-form__add-group">
+      <div class="preq_error" v-if="show">
+        <p class="preq">all fields required</p>
+      </div>
+      <div class="text-form__input-group">
+        <label class="text-form__label">Enter your post text here:</label>
+          <textarea class="text-form__input text-input__field" type="text" maxlength="400" placeholder="only 400 chars long" @keyup.13="addPost" v-model="postText"></textarea>
+        </div>
+        <div class="text-form__input-group">
+          <label class="text-form__label">Date & Time of the post:</label>
+          <input class="text-form__input date-input__field" type="datetime-local" min="2000-01-01T00:01" max="3000-12-31T23:59" @keyup.13="addPost" v-model="postDate">
+        </div>
+        <div class="text-form__input-group">
+          <a class="text-form__add-button" @click="addPost">add my text to stack</a>
+        </div>
+      </div>
+    `,
   data: function () {
     return {
       show: false,
@@ -43,6 +42,7 @@ Vue.component( 'post-a-post', {
           isChecked : false
         }
         this.$emit('post-added', userPost)
+        
         this.postText = null;
         this.postDate = null;
         this.postTime = null;
@@ -52,15 +52,13 @@ Vue.component( 'post-a-post', {
   }
 });
 
-let vm = new Vue({
-  el: '#app',
+Vue.component( 'show-a-post',{
   template:`
     <div>
-      <post-a-post @post-added="addPostToCloud"></post-a-post>
-        <div class="text-form__show-group">
-          <div class="user-post__date-block" v-for="(postCloud, date) in postClouds">
-            <p class="block-date">Post from {{ date }}</p>
-            <div class="user-post__block" v-for="post in postCloud">
+      <div class="text-form__show-group">
+         <div class="user-post__date-block" v-for="postCloud in postClouds">
+            <p class="block-date">Post from {{ postClouds[postCloud] }}</p>
+            <div class="user-post__block" v-for="post in postClouds[postCloud]">
               <div class="user-post__checkbox">
                 <input type="checkbox" @change="isChecked = true">
               </div>
@@ -72,30 +70,38 @@ let vm = new Vue({
         </div>
       </div>
   `,
-  data: function () {
-    return {
-      postClouds: postClouds = {}
-    }
+  props: {
+     postClouds: Object
+  }
+});
+
+let vm = new Vue({
+  el: '#app',
+  template:`
+  <form class="text-form" action="index.html" method="post">
+    <h1 class="text-form__title">post-a-post</h1>
+    <post-a-post @post-added="addPostToCloud"></post-a-post>
+    <show-a-post></show-a-post>
+  </form>
+  `,
+  data:{
+    postClouds: postClouds = {}
   },
   methods:{
     addPostToCloud: function (userPost){
+      console.log(userPost);
+      console.log(this.postClouds);
       if ( this.postClouds.hasOwnProperty(userPost.postDate) ) {
-        this.postClouds[userPost.postDate].push(userPost);
+        let newPost = this.postClouds[userPost.postDate].push(userPost);
+        Vue.set(this.postClouds, userPost.postDate, newPost);
+        //this.postClouds[userPost.postDate].push(userPost);
       } else {
-          this.postClouds[userPost.postDate] = [];
-          this.postClouds[userPost.postDate].push(userPost);
+        Vue.set(this.postClouds, userPost.postDate, []);
+          //this.postClouds[userPost.postDate] = [];
+        let newPost = this.postClouds[userPost.postDate].push(userPost);
+        Vue.set(this.postClouds, userPost.postDate, newPost);
+          //this.postClouds[userPost.postDate].push(userPost);
         };
-        console.log(postClouds);
       }
     }
   });
-
-
-
-
-
-
-
-/*
-<p v-if="!this.postClouds.length">There are no posts yet.</p>
-*/
