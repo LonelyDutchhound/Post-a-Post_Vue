@@ -58,12 +58,12 @@ Vue.component( 'show-and-sort',{
     <div class="text-form__show-group">
        <div class="user-post__date-block" v-for="(postCloud, date) in postClouds">
           <p class="block-date">Post from {{ date }}</p>
-          <div class="user-post__block" v-for="post in postCloud">
+          <div class="user-post__block" v-for="post in postCloud" :class="{'selected': post.isChecked }">
             <div class="user-post__checkbox">
               <input type="checkbox" @change="makeItChecked" :id="'at'+ post.postDate + post.postTime" >
             </div>
             <div class="user-post__text">
-              <p><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
+              <p ><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@ Vue.component( 'show-and-sort',{
       console.log(postClouds[date]);
       let post = postClouds[date].findIndex(item => item.postTime === time);
       console.log(post);
-      postClouds[date][post].isChecked = true;
+      postClouds[date][post].isChecked = !postClouds[date][post].isChecked;
       console.log(postClouds[date][post].isChecked);
     }
   }
