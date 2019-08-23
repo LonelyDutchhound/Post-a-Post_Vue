@@ -1,5 +1,3 @@
-//let postClouds = {};
-
 Vue.component( 'post-a-post', {
   template: `
     <div class="text-form__add-group">
@@ -70,18 +68,13 @@ Vue.component( 'show-and-sort',{
       </div>
     </div>
   `,
-  props: [ 'postClouds'],
+  props: [ 'postClouds' ],
   methods:{
     makeItChecked: function (event) {
-      console.log(event.target.id)
       let date = event.target.id.substring(2,12);
       let time = event.target.id.substring(12);
-      console.log(date, time);
-      console.log(postClouds[date]);
       let post = postClouds[date].findIndex(item => item.postTime === time);
-      console.log(post);
       postClouds[date][post].isChecked = !postClouds[date][post].isChecked;
-      console.log(postClouds[date][post].isChecked);
     }
   }
 });
@@ -105,13 +98,10 @@ let vm = new Vue({
       if ( this.postClouds.hasOwnProperty(userPost.postDate) ) {
         let newPostAdd = [...this.postClouds[userPost.postDate], userPost];
         Vue.set(this.postClouds, userPost.postDate, newPostAdd);
-        //this.postClouds[userPost.postDate].push(userPost);
       } else {
         Vue.set(this.postClouds, userPost.postDate, []);
-          //this.postClouds[userPost.postDate] = [];
           let newPostAdd = [...this.postClouds[userPost.postDate], userPost];
           Vue.set(this.postClouds, userPost.postDate, newPostAdd);
-          //this.postClouds[userPost.postDate].push(userPost);
         };
       }
     }
