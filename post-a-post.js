@@ -42,7 +42,7 @@ Vue.component( 'post-a-post', {
           isChecked : false
         }
         this.$emit('post-added', userPost)
-        
+
         this.postText = null;
         this.postDate = null;
         this.postTime = null;
@@ -52,26 +52,27 @@ Vue.component( 'post-a-post', {
   }
 });
 
-Vue.component( 'show-a-post',{
+Vue.component( 'show-and-sort',{
   template:`
     <div>
-      <div class="text-form__show-group">
-         <div class="user-post__date-block" v-for="postCloud in postClouds">
-            <p class="block-date">Post from {{ postClouds[postCloud] }}</p>
-            <div class="user-post__block" v-for="post in postClouds[postCloud]">
-              <div class="user-post__checkbox">
-                <input type="checkbox" @change="isChecked = true">
-              </div>
-              <div class="user-post__text">
-                <p><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
-              </div>
+    <div class="text-form__show-group">
+       <div class="user-post__date-block" v-for="(postCloud, date) in postClouds">
+          <p class="block-date">Post from {{ date }}</p>
+          <div class="user-post__block" v-for="post in postCloud">
+            <div class="user-post__checkbox">
+              <input type="checkbox" @change="isChecked = true">
+            </div>
+            <div class="user-post__text">
+              <p><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
             </div>
           </div>
         </div>
       </div>
+    </div>
   `,
-  props: {
-     postClouds: Object
+  props: [ 'postClouds'],
+  methods:{
+    
   }
 });
 
@@ -81,7 +82,7 @@ let vm = new Vue({
   <form class="text-form" action="index.html" method="post">
     <h1 class="text-form__title">post-a-post</h1>
     <post-a-post @post-added="addPostToCloud"></post-a-post>
-    <show-a-post></show-a-post>
+    <show-and-sort :postClouds="postClouds"></show-and-sort>
   </form>
   `,
   data:{
@@ -92,14 +93,14 @@ let vm = new Vue({
       console.log(userPost);
       console.log(this.postClouds);
       if ( this.postClouds.hasOwnProperty(userPost.postDate) ) {
-        let newPost = this.postClouds[userPost.postDate].push(userPost);
-        Vue.set(this.postClouds, userPost.postDate, newPost);
+        let newPostAdd = [...this.postClouds[userPost.postDate], userPost];
+        Vue.set(this.postClouds, userPost.postDate, newPostAdd);
         //this.postClouds[userPost.postDate].push(userPost);
       } else {
         Vue.set(this.postClouds, userPost.postDate, []);
           //this.postClouds[userPost.postDate] = [];
-        let newPost = this.postClouds[userPost.postDate].push(userPost);
-        Vue.set(this.postClouds, userPost.postDate, newPost);
+          let newPostAdd = [...this.postClouds[userPost.postDate], userPost];
+          Vue.set(this.postClouds, userPost.postDate, newPostAdd);
           //this.postClouds[userPost.postDate].push(userPost);
         };
       }
