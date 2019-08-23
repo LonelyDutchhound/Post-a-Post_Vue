@@ -54,13 +54,31 @@ Vue.component( 'post-a-post', {
 
 let vm = new Vue({
   el: '#app',
+  template:`
+    <div>
+      <post-a-post @post-added="addPostToCloud"></post-a-post>
+        <div class="text-form__show-group">
+          <div class="user-post__date-block" v-for="(postCloud, date) in postClouds">
+            <p class="block-date">Post from {{ date }}</p>
+            <div class="user-post__block" v-for="post in postCloud">
+              <div class="user-post__checkbox">
+                <input type="checkbox" @change="isChecked = true">
+              </div>
+              <div class="user-post__text">
+                <p><em>{{ post.postTime }}</em><br>{{ post.postText }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  `,
   data: function () {
     return {
       postClouds: postClouds = {}
     }
   },
   methods:{
-    addPostToCloud: function(userPost){
+    addPostToCloud: function (userPost){
       if ( this.postClouds.hasOwnProperty(userPost.postDate) ) {
         this.postClouds[userPost.postDate].push(userPost);
       } else {
@@ -68,7 +86,7 @@ let vm = new Vue({
           this.postClouds[userPost.postDate].push(userPost);
         };
         console.log(postClouds);
-      },
+      }
     }
   });
 
