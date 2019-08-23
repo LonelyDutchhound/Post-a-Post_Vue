@@ -97,7 +97,6 @@ p {
   position: relative;
   display: flex;
   flex-direction: row;
-  order: -2;
   margin-bottom: 2em;
   max-width: 99%;
 }
